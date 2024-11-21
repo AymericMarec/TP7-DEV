@@ -9,7 +9,7 @@ let chat = document.getElementById("chat")
 
 let pseudo = ""
 
-const ws = new WebSocket("ws://localhost:8000");
+const ws = new WebSocket("ws://10.1.1.253:8000");
   
 ws.onmessage = (event) => {
     console.log("Message recu :",event.data);

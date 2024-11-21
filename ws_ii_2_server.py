@@ -19,12 +19,12 @@ async def Client(websocket):
 async def broadcast_messages(message):
     global Clients
     for client in Clients:
-        ws_client =  client.get('cat')
+        ws_client =  client.get(client)
         print(f"message envoyé en broadcast a {client}")
         await ws_client.send(message)
 
 async def main():
-    async with websockets.serve(Client, "localhost", 8000):
+    async with websockets.serve(Client, "10.1.1.253", 8000):
         await asyncio.Future()  # run forever
 
 Clients = []
