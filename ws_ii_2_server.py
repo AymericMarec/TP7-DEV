@@ -7,32 +7,32 @@ async def Client(websocket):
     global Clients
     Clients.append(websocket)
     print("new client")
-    id = await websocket.recv()
-    if(id == "new" or await client.get('id') is None):
-        await CreateUser(websocket)
-    else :
-        pseudo = await client.get(id)
-        print(f"{pseudo} vient de se reconnecter !")
-        await websocket.send("connect|"+pseudo) 
+    try :
+        id = await websocket.recv()
+        if(id == "new" or await client.get('id') is None):
+            await CreateUser(websocket)
+        else :
+            pseudo = await client.get(id)
+            print(f"{pseudo} vient de se reconnecter !")
+            await websocket.send("connect|"+pseudo)     
 
-
-    # if(await client.get('id') == id):
-    #     pseudo = await client.get(id)
-    #     await websocket.send("connect|"+pseudo)
-    #     print("hop")
-    # else :
-    #     await CreateUser(websocket)        
-
-    while True:
-        message = await websocket.recv()
-        await broadcast_messages(message)
-        print(f"Message recu {message}")
+        while True:
+            message = await websocket.recv()
+            await broadcast_messages(message)
+            print(f"Message recu {message}")
+    except:
+        Clients.remove(websocket)
+        print("deconnecté")
 
 async def broadcast_messages(message):
     global Clients
     for client in Clients:
-        print(f"message envoyé en broadcast a {client}")
-        await client.send(message)
+        try:
+            print(f"message envoyé en broadcast a {client}")
+            await client.send(message)
+        except:
+            Clients.remove(client)
+            print("deconnecté")   
 
 async def CreateUser(websocket):
     global client
