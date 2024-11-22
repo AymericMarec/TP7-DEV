@@ -1,17 +1,21 @@
 import asyncio
 import websockets
 import redis.asyncio as redis
-import json
+import uuid
 
 async def Client(websocket):
     global Clients
-    global clientDB
+    Clients.append(websocket)
     print("new client")
-    pseudo = await websocket.recv()
-    Clients.append(pseudo)
-    print(websocket)
-    await clientDB.set(pseudo, websocket)
-    print(f"{pseudo} a rejoint !")
+    id = await websocket.recv()
+    
+    if(await client.get('id') == id):
+        pseudo = await client.get(id)
+        await websocket.send("connect|"+pseudo)
+        print("hop")
+    else :
+        await CreateUser()        
+
     while True:
         message = await websocket.recv()
         await broadcast_messages(message)
@@ -20,15 +24,23 @@ async def Client(websocket):
 async def broadcast_messages(message):
     global Clients
     for client in Clients:
-        ws_client = await clientDB.get(client)
         print(f"message envoyé en broadcast a {client}")
-        await ws_client.send(message)
+        await client.send(message)
+
+async def CreateUser(websocket):
+    global client
+    id = uuid.uuid4()
+    pseudo = await websocket.recv()
+    print(f"{pseudo} a rejoint !")
+    await client.set(id, pseudo)
+    await websocket.send("id"+id)
 
 async def main():
     async with websockets.serve(Client, "10.1.1.253", 8000):
         await asyncio.Future()  # run forever
 
+Clients = []
+
 if __name__ == "__main__":
-    Clients = []
-    clientDB = redis.Redis(host="10.1.1.253", port=6379)
+    client = redis.Redis(host="10.1.1.253", port=6379)
     asyncio.run(main())

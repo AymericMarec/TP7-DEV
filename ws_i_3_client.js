@@ -12,13 +12,30 @@ let pseudo = ""
 const ws = new WebSocket("ws://10.1.1.253:8000");
   
 ws.onmessage = (event) => {
-    console.log("Message recu :",event.data);
-    const msg = document.createElement("p");
-    msg.textContent = event.data
-    chat.appendChild(msg)};
+    if(event.data.slice(0,8) == "connect|"){
+        pseudo_div.style.display = "none"
+        chatbox.style.display = "block"
+        pseudo = event.data.slice(8,event.data.length)
+    }else if(event.data.slice(0,2) == "id|"){
+        id =  event.data.slice(2,event.data.length)
+        pseudo_div.style.display = "none"
+        chatbox.style.display = "block"
+        localStorage.setItem("id", id);
+    }else {
+        console.log("Message recu :",event.data);
+        const msg = document.createElement("p");
+        msg.textContent = event.data
+        chat.appendChild(msg)};
+    }
 
 ws.onopen = (event) =>{
     console.log("Connecté en websocket !")
+    const client_id = localStorage.getItem("id");
+    if(client_id != null){
+        ws.send(client_id)
+    }else{
+        ws.send("new")
+    }
 }
 
 ws.onclose = (event) =>{
