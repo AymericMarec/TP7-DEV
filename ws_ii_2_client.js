@@ -9,6 +9,7 @@ let chat = document.getElementById("chat")
 let pseudotittle = document.getElementById("pseudoTittle")
 
 let pseudo = ""
+let id = ""
 
 const ws = new WebSocket("ws://10.1.1.253:8000");
   
@@ -38,6 +39,7 @@ ws.onopen = (event) =>{
     if(client_id != null){
         ws.send(client_id)
     }else{
+        id = client_id
         ws.send("new")
     }
 }
@@ -47,15 +49,6 @@ ws.onclose = (event) =>{
 }
 
 function sendmessage(){
-    ws.send(pseudo + " : " +input_message.value);
+    ws.send(input_message.value);
     input_message.value =""
 }
-
-function sendpseudo(){
-    ws.send(input_pseudo.value);
-    pseudo = input_pseudo.value
-    pseudo_div.style.display = "none"
-    chatbox.style.display = "block"
-}
-
-
