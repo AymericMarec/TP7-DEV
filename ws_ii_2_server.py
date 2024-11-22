@@ -20,8 +20,7 @@ async def Client(websocket):
 
         while True:
             input = await websocket.recv()   
-            print(input)
-            message = pseudo + " : "+input       
+            message = pseudo + " : "+input.decode()   
             await broadcast_messages(message)
             print(f"Message recu {message}")
     except Exception as error:
