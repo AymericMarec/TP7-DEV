@@ -14,7 +14,7 @@ async def Client(websocket):
         await websocket.send("connect|"+pseudo)
         print("hop")
     else :
-        await CreateUser()        
+        await CreateUser(websocket)        
 
     while True:
         message = await websocket.recv()
