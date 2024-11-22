@@ -5,6 +5,7 @@ import uuid
 
 async def Client(websocket):
     global Clients
+    global client
     Clients.append(websocket)
     print("new client")
     try :
