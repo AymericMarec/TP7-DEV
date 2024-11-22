@@ -11,7 +11,6 @@ async def Client(websocket):
     try :
         id = await websocket.recv()
         pseudo = await client.get(id)
-        # pseudo = pseudo[2:len(pseudo)-1]
         if(id == "new" or pseudo is None):
             print("Nouvel utilisateur")
             await CreateUser(websocket)
@@ -21,10 +20,12 @@ async def Client(websocket):
 
         while True:
             input = await websocket.recv()   
+            print(input)
             message = pseudo + " : "+input       
             await broadcast_messages(message)
             print(f"Message recu {message}")
-    except:
+    except Exception :
+        print(Exception)
         Clients.remove(websocket)
         print("un client s'est deconnecté")
 

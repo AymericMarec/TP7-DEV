@@ -1,5 +1,3 @@
-console.log("test")
-
 let input_pseudo = document.getElementById("input-pseudo")
 let input_message = document.getElementById("input-message")
 
@@ -49,6 +47,17 @@ ws.onclose = (event) =>{
 }
 
 function sendmessage(){
+    console.log("envoie : ",input_message.value)
     ws.send(input_message.value);
     input_message.value =""
 }
+
+
+function sendpseudo(){
+    ws.send(input_pseudo.value);
+    pseudo = input_pseudo.value
+    pseudo_div.style.display = "none"
+    chatbox.style.display = "block"
+}
+
+
