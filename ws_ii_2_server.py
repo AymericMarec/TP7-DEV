@@ -29,7 +29,8 @@ async def broadcast_messages(message):
 
 async def CreateUser(websocket):
     global client
-    id = uuid.uuid4()
+    id = str(uuid.uuid4())
+    print("create id : "+id)
     pseudo = await websocket.recv()
     print(f"{pseudo} a rejoint !")
     await client.set(id, pseudo)
