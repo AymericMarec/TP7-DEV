@@ -48,6 +48,8 @@ async def CreateUser(websocket):
     await websocket.send("id|"+id)
 
 async def main():
+    await client.set("toto",5)
+    print(await client.get("toto"))
     async with websockets.serve(Client, "10.1.1.253", 8000):
         await asyncio.Future()  # run forever
 
