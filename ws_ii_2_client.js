@@ -18,13 +18,13 @@ ws.onmessage = (event) => {
         pseudo_div.style.display = "none"
         chatbox.style.display = "block"
         pseudo = event.data.slice(8,event.data.length)
-        pseudotittle.innerText = "connecté en tant que :"+pseudo
+        pseudotittle.innerText = "connecté en tant que : "+pseudo
     }else if(event.data.slice(0,3) == "id|"){
         id =  event.data.slice(3,event.data.length)
         pseudo_div.style.display = "none"
         chatbox.style.display = "block"
         localStorage.setItem("id", id);
-        pseudotittle.innerText = "connecté en tant que :"+pseudo
+        pseudotittle.innerText = "connecté en tant que : "+pseudo
     }else {
         console.log("Message recu :",event.data);
         const msg = document.createElement("p");
