@@ -24,8 +24,8 @@ async def Client(websocket):
             message = pseudo + " : "+input       
             await broadcast_messages(message)
             print(f"Message recu {message}")
-    except Exception :
-        print(Exception)
+    except Exception as error:
+        print(error)
         Clients.remove(websocket)
         print("un client s'est deconnecté")
 
