@@ -17,7 +17,7 @@ async def Client(websocket):
             await CreateUser(websocket)
         else :
             print(f"{pseudo} vient de se reconnecter !")
-            await websocket.send("connect|"+str(pseudo)[2:len(pseudo)-1])     
+            await websocket.send("connect|"+str(pseudo))     
 
         while True:
             message = await websocket.recv()
