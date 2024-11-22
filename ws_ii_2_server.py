@@ -11,14 +11,12 @@ async def Client(websocket):
     try :
         id = await websocket.recv()
         pseudo = await client.get(id)
-        print(id)
-        print(pseudo)
         if(id == "new" or pseudo is None):
             print("Nouvel utilisateur")
             await CreateUser(websocket)
         else :
             print(f"{pseudo} vient de se reconnecter !")
-            await websocket.send("connect|"+str(pseudo))     
+            await websocket.send("connect|"+str(pseudo)[2:len(pseudo)-1])     
 
         while True:
             message = await websocket.recv()
@@ -26,13 +24,12 @@ async def Client(websocket):
             print(f"Message recu {message}")
     except:
         Clients.remove(websocket)
-        print("deconnecté")
+        print("un client s'est deconnecté")
 
 async def broadcast_messages(message):
     global Clients
     for client in Clients:
         try:
-            print(f"message envoyé en broadcast a {client}")
             await client.send(message)
         except:
             Clients.remove(client)
@@ -41,11 +38,9 @@ async def broadcast_messages(message):
 async def CreateUser(websocket):
     global client
     id = str(uuid.uuid4())
-    print("create id : "+id)
     pseudo = await websocket.recv()
     print(f"{pseudo} a rejoint !")
     await client.set(id, pseudo)
-    print(await client.get(id))
     await websocket.send("id|"+id)
 
 async def main():
