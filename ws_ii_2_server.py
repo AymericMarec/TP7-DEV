@@ -34,7 +34,7 @@ async def CreateUser(websocket):
     pseudo = await websocket.recv()
     print(f"{pseudo} a rejoint !")
     await client.set(id, pseudo)
-    await websocket.send("id"+id)
+    await websocket.send("id|"+id)
 
 async def main():
     async with websockets.serve(Client, "10.1.1.253", 8000):
