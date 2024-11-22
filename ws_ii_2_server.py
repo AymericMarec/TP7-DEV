@@ -9,6 +9,8 @@ async def Client(websocket):
     print("new client")
     try :
         id = await websocket.recv()
+        print(id)
+        print(client.get('id'))
         if(id == "new" or await client.get('id') is None):
             await CreateUser(websocket)
         else :
