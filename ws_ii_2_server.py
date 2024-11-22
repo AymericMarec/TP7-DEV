@@ -10,7 +10,7 @@ async def Client(websocket):
     pseudo = await websocket.recv()
     Clients.append(pseudo)
     print(websocket)
-    await clientDB.set(pseudo, bytes(websocket))
+    await clientDB.set(pseudo, websocket)
     print(f"{pseudo} a rejoint !")
     while True:
         message = await websocket.recv()
@@ -20,7 +20,7 @@ async def Client(websocket):
 async def broadcast_messages(message):
     global Clients
     for client in Clients:
-        ws_client = await clientDB.get(str(client))
+        ws_client = await clientDB.get(client)
         print(f"message envoyé en broadcast a {client}")
         await ws_client.send(message)
 
