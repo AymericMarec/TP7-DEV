@@ -15,12 +15,13 @@ ws.onmessage = (event) => {
     console.log(event.data)
     console.log(event.data.slice(0,9))
     console.log(event.data.slice(0,3))
-    if(event.data.slice(0,8) == "connect|"){
+    if(event.data.slice(0,9) == "connect|"){
+        console.log("connecté !")
         pseudo_div.style.display = "none"
         chatbox.style.display = "block"
         pseudo = event.data.slice(8,event.data.length)
-    }else if(event.data.slice(0,2) == "id|"){
-        id =  event.data.slice(2,event.data.length)
+    }else if(event.data.slice(0,3) == "id|"){
+        id =  event.data.slice(3,event.data.length)
         pseudo_div.style.display = "none"
         chatbox.style.display = "block"
         localStorage.setItem("id", id);
@@ -34,6 +35,7 @@ ws.onmessage = (event) => {
 ws.onopen = (event) =>{
     console.log("Connecté en websocket !")
     const client_id = localStorage.getItem("id");
+    console.log(client_id)
     if(client_id != null){
         ws.send(client_id)
     }else{

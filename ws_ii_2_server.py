@@ -8,13 +8,19 @@ async def Client(websocket):
     Clients.append(websocket)
     print("new client")
     id = await websocket.recv()
-    
-    if(await client.get('id') == id):
-        pseudo = await client.get(id)
-        await websocket.send("connect|"+pseudo)
-        print("hop")
+    if(id == "new" or await client.get('id') is None):
+        await CreateUser(websocket)
     else :
-        await CreateUser(websocket)        
+        pseudo = await client.get(id)
+        await websocket.send("connect|"+pseudo) 
+
+
+    # if(await client.get('id') == id):
+    #     pseudo = await client.get(id)
+    #     await websocket.send("connect|"+pseudo)
+    #     print("hop")
+    # else :
+    #     await CreateUser(websocket)        
 
     while True:
         message = await websocket.recv()
