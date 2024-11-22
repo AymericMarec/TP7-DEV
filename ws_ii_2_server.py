@@ -10,13 +10,13 @@ async def Client(websocket):
     print("new client")
     try :
         id = await websocket.recv()
-        pseudo = await client.get('id')
+        pseudo = await client.get(id)
         print(id)
         print(pseudo)
         if(id == "new" or pseudo is None):
+            print("Nouvel utilisateur")
             await CreateUser(websocket)
         else :
-            pseudo = await client.get(id)
             print(f"{pseudo} vient de se reconnecter !")
             await websocket.send("connect|"+pseudo)     
 
@@ -45,11 +45,10 @@ async def CreateUser(websocket):
     pseudo = await websocket.recv()
     print(f"{pseudo} a rejoint !")
     await client.set(id, pseudo)
+    print(await client.get(id))
     await websocket.send("id|"+id)
 
 async def main():
-    await client.set("toto",5)
-    print(await client.get("toto"))
     async with websockets.serve(Client, "10.1.1.253", 8000):
         await asyncio.Future()  # run forever
 
